@@ -111,10 +111,10 @@ add_rewrite_rule(
 );
 flush_rewrite_rules();
 
-if ( file_exists( DISTROPRESS__PLUGIN_DIR . 'utils/safepatch/roots/' . $package . '/patches/main.sp' ) ) {
+if ( file_exists( DISTROPRESS__PLUGIN_DIR . 'utils/safepatch-roots/' . $package . '/patches/main.sp' ) ) {
 	$justLoadSafePatch = true;
 	$spConfig = array(
-		'spRoot' => DISTROPRESS__PLUGIN_DIR . 'utils/safepatch/roots/' . $package . '/',
+		'spRoot' => DISTROPRESS__PLUGIN_DIR . 'utils/safepatch-roots/' . $package . '/',
 		'basePath' => $script_path,
 		'ignore' => array('.svn/', '_svn/'),
 		'ignorePatchFN' => '.-',
