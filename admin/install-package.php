@@ -141,7 +141,7 @@ $spConfig = array(
 	'addComments' => array('!php' => '/* $ */', '!html' => '<!-- $ -->')
 );
 
-if ( is_array( $dependencies ) && in_array( 'safepatch', $dependencies ) && file_exists( DISTROPRESS__PLUGIN_DIR . 'utils/safepatch-roots/' . $package . '/patches/001.sp' ) ) {
+if ( is_array( $dependencies ) && in_array( 'safepatch', $dependencies ) && file_exists( DISTROPRESS__PLUGIN_DIR . 'utils/safepatch-roots/' . $package . '/patches/main.sp' ) ) {
 /* REMOVE */
 	if ( is_dir( $spConfig['spRoot'] . 'state/' ) )
 		distropress_deltree( $spConfig['spRoot'] . 'state/' );

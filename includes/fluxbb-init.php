@@ -25,7 +25,7 @@ function distropress_shutdown() {
 		$tpl_main = preg_replace( '~\n(?:.*)</body>(?:.*)\n~U', $distropress_admin_bar . '$0', $tpl_main );
 	}
 
-		$distropress_main_menu_style = '<link rel=\'stylesheet\' id=\'distropress-main-menu-css\'  href=\'http://localhost/wordpress/wp-content/plugins/distropress/css/main-menu.css?ver=4.4.2\' type=\'text/css\' media=\'all\' />';
+		$distropress_main_menu_style = '<link rel=\'stylesheet\' id=\'distropress-main-menu-css\'  href=\'' . dirname( plugin_dir_url( __FILE__ ) ) . '/css/main-menu.css\' type=\'text/css\' media=\'all\' />';
 
 	ob_start();
 	distropress_main_menu();
