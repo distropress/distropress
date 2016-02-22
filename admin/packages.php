@@ -18,13 +18,17 @@ $modules = array(
 		'name' => __( 'FluxBB' ),
 		'desc' => __( 'Add a forum to your site.' )
 	),
+//	'glotpress' => array(
+//		'name' => __( 'GlotPress' ),
+//		'desc' => __( 'Translation.' )
+//	),
 	'indefero' => array(
 		'name' => __( 'Indefero' ),
-		'desc' => __( 'Repository' )
+		'desc' => __( 'A code repository.' )
 	),
 	'mediawiki' => array(
 		'name' => __( 'MediaWiki' ),
-		'desc' => __( 'Wiki' )
+		'desc' => __( 'Wiki.' )
 	)
 );
 

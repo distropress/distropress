@@ -1,0 +1,40 @@
+@import url(https://fonts.googleapis.com/css?family=Signika);
+
+#distropress-main-menu {
+	all: initial !important;
+	font-family: "Signika", sans-serif !important;
+	text-align: center !important;
+	position: fixed !important;
+	top: 0 !important;
+	right: 10px !important;
+	color:#fff !important;
+	border: 0 !important;
+	padding: 0 !important;
+	margin: 0 !important;
+	border-bottom-left-radius: 10px !important;
+	border-bottom-right-radius: 10px !important;
+	background-color: #000 !important;
+	max-width: 75% !important;
+	height: 30px !important;
+	width: 350px !important;
+}
+
+#distropress-main-menu ul {
+	border: 0 !important;
+	padding: 0 !important;
+	margin: 0 !important;
+	position: relative !important;
+}
+
+#distropress-main-menu li {
+	display: inline !important;
+}
+
+#distropress-main-menu li + li::before {
+    content: ' | ' !important;
+}
+
+#distropress-main-menu ul li a {
+	color: #eee !important;
+	text-decoration: none !important;
+}

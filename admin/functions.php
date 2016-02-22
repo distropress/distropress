@@ -54,6 +54,11 @@ function distropress_packages() {
 
 /* Install package */
 function distropress_install_package() {
-	require_once( DISTROPRESS__PLUGIN_DIR . 'admin/install-package.php' );
+	require( DISTROPRESS__PLUGIN_DIR . 'admin/install-package.php' );
 }
 add_action( 'update-custom_distropress-install-package', 'distropress_install_package' );
+
+/* Install dependency */
+function distropress_install_dependency( $dependency = NULL ) {
+	require( DISTROPRESS__PLUGIN_DIR . 'admin/install-package.php' );
+}
