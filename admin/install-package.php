@@ -122,7 +122,7 @@ if ( isset( $dependencies ) ) {
 
 global $wp_rewrite;
 add_rewrite_rule(
-	'foros/(.*)',
+	'forums/(.*)',
 	substr( $script_url, strlen( esc_url( home_url( '/' ) ) ) ) . '$1',
 	'top'
 );
