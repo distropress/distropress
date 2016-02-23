@@ -53,79 +53,80 @@ $wpdb->query('RENAME TABLE '.$db_prefix.'users TO '.$db_prefix.'users_old');
 $wpdb->query('CREATE VIEW '.$db_prefix.'users AS SELECT * FROM '.$db_prefix.'users_old WHERE id = 1 UNION SELECT u.ID + 1 AS id, MAX(IF(um.meta_key = \'fluxbb-group_id\', um.meta_value, NULL)) AS group_id, u.user_login AS username, \'da39a3ee5e6b4b0d3255bfef95601890afd80709\' AS password, u.user_email AS email, MAX(IF(um.meta_key = \'distropress-title\', um.meta_value, NULL)) AS title, CONCAT(MAX(IF(um.meta_key = \'first_name\', um.meta_value, NULL)), \' \', MAX(IF(um.meta_key = \'last_name\', um.meta_value, NULL))) AS realname, u.user_url AS url, MAX(IF(um.meta_key = \'distropress-jabber\', um.meta_value, NULL)) AS jabber, MAX(IF(um.meta_key = \'distropress-icq\', um.meta_value, NULL)) AS icq, MAX(IF(um.meta_key = \'distropress-msn\', um.meta_value, NULL)) AS msn, MAX(IF(um.meta_key = \'distropress-aim\', um.meta_value, NULL)) AS aim, MAX(IF(um.meta_key = \'distropress-yahoo\', um.meta_value, NULL)) AS yahoo, MAX(IF(um.meta_key = \'distropress-location\', um.meta_value, NULL)) AS location, MAX(IF(um.meta_key = \'fluxbb-signature\', um.meta_value, NULL)) AS signature, MAX(IF(um.meta_key = \'fluxbb-disp_topics\', um.meta_value, NULL)) AS disp_topics, MAX(IF(um.meta_key = \'fluxbb-disp_posts\', um.meta_value, NULL)) AS disp_posts, MAX(IF(um.meta_key = \'fluxbb-email_setting\', um.meta_value, NULL)) AS email_setting, MAX(IF(um.meta_key = \'fluxbb-notify_with_post\', um.meta_value, NULL)) AS notify_with_post, MAX(IF(um.meta_key = \'fluxbb-auto_notify\', um.meta_value, NULL)) AS auto_notify, MAX(IF(um.meta_key = \'fluxbb-show_smilies\', um.meta_value, NULL)) AS show_smilies, MAX(IF(um.meta_key = \'fluxbb-show_img\', um.meta_value, NULL)) AS show_img, MAX(IF(um.meta_key = \'fluxbb-show_img_sig\', um.meta_value, NULL)) AS show_img_sig, MAX(IF(um.meta_key = \'fluxbb-show_avatars\', um.meta_value, NULL)) AS show_avatars, MAX(IF(um.meta_key = \'fluxbb-show_sig\', um.meta_value, NULL)) AS show_sig, MAX(IF(um.meta_key = \'distropress-timezone\', um.meta_value, NULL)) AS timezone, MAX(IF(um.meta_key = \'distropress-dst\', um.meta_value, NULL)) AS dst, MAX(IF(um.meta_key = \'distropress-time_format\', um.meta_value, NULL)) AS time_format, MAX(IF(um.meta_key = \'distropress-date_format\', um.meta_value, NULL)) AS date_format, MAX(IF(um.meta_key = \'fluxbb-language\', um.meta_value, NULL)) AS language, MAX(IF(um.meta_key = \'fluxbb-style\', um.meta_value, NULL)) AS style, MAX(IF(um.meta_key = \'fluxbb-num_posts\', um.meta_value, NULL)) AS num_posts, MAX(IF(um.meta_key = \'fluxbb-last_post\', um.meta_value, NULL)) AS last_post, MAX(IF(um.meta_key = \'fluxbb-last_search\', um.meta_value, NULL)) AS last_search, MAX(IF(um.meta_key = \'fluxbb-last_email_sent\', um.meta_value, NULL)) AS last_email_sent, MAX(IF(um.meta_key = \'fluxbb-last_report_sent\', um.meta_value, NULL)) AS last_report_sent, UNIX_TIMESTAMP(u.user_registered) AS registered, MAX(IF(um.meta_key = \'distropress-registration_ip\', um.meta_value, NULL)) AS registration_ip, MAX(IF(um.meta_key = \'fluxbb-last_visit\', um.meta_value, NULL)) AS last_visit, MAX(IF(um.meta_key = \'fluxbb-admin_note\', um.meta_value, NULL)) AS admin_note, MAX(IF(um.meta_key = \'fluxbb-activate_string\', um.meta_value, NULL)) AS activate_string, MAX(IF(um.meta_key = \'fluxbb-activate_key\', um.meta_value, NULL)) AS activate_key FROM '.$table_prefix.'users AS u LEFT JOIN '.$table_prefix.'usermeta AS um ON um.user_id = ID');
 
 $now = time();
+$current_user = wp_get_current_user()->ID;
 
 // Required fields
-if (get_user_meta(wp_get_current_user()->ID, 'fluxbb-group_id', TRUE))
-	update_user_meta(wp_get_current_user()->ID, 'fluxbb-group_id', 1);
-if (get_user_meta(wp_get_current_user()->ID, 'fluxbb-language', TRUE))
-	update_user_meta(wp_get_current_user()->ID, 'fluxbb-language', $_POST['req_default_lang']);
-if (get_user_meta(wp_get_current_user()->ID, 'fluxbb-style', TRUE))
-	update_user_meta(wp_get_current_user()->ID, 'fluxbb-style', $_POST['req_default_style']);
-if (get_user_meta(wp_get_current_user()->ID, 'fluxbb-num_posts', TRUE))
-	update_user_meta(wp_get_current_user()->ID, 'fluxbb-num_posts', 1);
-if (get_user_meta(wp_get_current_user()->ID, 'fluxbb-last_post', TRUE))
-	update_user_meta(wp_get_current_user()->ID, 'fluxbb-last_post', $now);
-if (get_user_meta(wp_get_current_user()->ID, 'distropress-registration_ip', TRUE))
-	update_user_meta(wp_get_current_user()->ID, 'distropress-registration_ip', get_remote_address());
-if (get_user_meta(wp_get_current_user()->ID, 'fluxbb-last_visit', TRUE))
-	update_user_meta(wp_get_current_user()->ID, 'fluxbb-last_visit', $now);
+if (count(get_user_meta($current_user, 'fluxbb-group_id')) == 0)
+	update_user_meta($current_user, 'fluxbb-group_id', 1);
+if (count(get_user_meta($current_user, 'fluxbb-language')) == 0)
+	update_user_meta($current_user, 'fluxbb-language', $_POST['req_default_lang']);
+if (count(get_user_meta($current_user, 'fluxbb-style')) == 0)
+	update_user_meta($current_user, 'fluxbb-style', $_POST['req_default_style']);
+if (count(get_user_meta($current_user, 'fluxbb-num_posts')) == 0)
+	update_user_meta($current_user, 'fluxbb-num_posts', 0);
+if (count(get_user_meta($current_user, 'fluxbb-last_post')) == 0)
+	update_user_meta($current_user, 'fluxbb-last_post', $now);
+if (count(get_user_meta($current_user, 'distropress-registration_ip')) == 0)
+	update_user_meta($current_user, 'distropress-registration_ip', get_remote_address());
+if (count(get_user_meta($current_user, 'fluxbb-last_visit')) == 0)
+	update_user_meta($current_user, 'fluxbb-last_visit', $now);
 
 // Optional fields
-if (get_user_meta(wp_get_current_user()->ID, 'distropress-title', TRUE))
-	update_user_meta(wp_get_current_user()->ID, 'distropress-title', NULL);
-if (get_user_meta(wp_get_current_user()->ID, 'jabber', TRUE))
-	update_user_meta(wp_get_current_user()->ID, 'jabber', NULL);
-if (get_user_meta(wp_get_current_user()->ID, 'distropress-icq', TRUE))
-	update_user_meta(wp_get_current_user()->ID, 'distropress-icq', NULL);
-if (get_user_meta(wp_get_current_user()->ID, 'distropress-msn', TRUE))
-	update_user_meta(wp_get_current_user()->ID, 'distropress-msn', NULL);
-if (get_user_meta(wp_get_current_user()->ID, 'aim', TRUE))
-	update_user_meta(wp_get_current_user()->ID, 'aim', NULL);
-if (get_user_meta(wp_get_current_user()->ID, 'yim', TRUE))
-	update_user_meta(wp_get_current_user()->ID, 'yim', NULL);
-if (get_user_meta(wp_get_current_user()->ID, 'distropress-location', TRUE))
-	update_user_meta(wp_get_current_user()->ID, 'distropress-location', NULL);
-if (get_user_meta(wp_get_current_user()->ID, 'fluxbb-signature', TRUE))
-	update_user_meta(wp_get_current_user()->ID, 'fluxbb-signature', NULL);
-if (get_user_meta(wp_get_current_user()->ID, 'fluxbb-disp_topics', TRUE))
-	update_user_meta(wp_get_current_user()->ID, 'fluxbb-disp_topics', NULL);
-if (get_user_meta(wp_get_current_user()->ID, 'fluxbb-disp_posts', TRUE))
-	update_user_meta(wp_get_current_user()->ID, 'fluxbb-disp_posts', NULL);
-if (get_user_meta(wp_get_current_user()->ID, 'fluxbb-email_setting', TRUE))
-	update_user_meta(wp_get_current_user()->ID, 'fluxbb-email_setting', NULL);
-if (get_user_meta(wp_get_current_user()->ID, 'fluxbb-notify_with_post', TRUE))
-	update_user_meta(wp_get_current_user()->ID, 'fluxbb-notify_with_post', NULL);
-if (get_user_meta(wp_get_current_user()->ID, 'fluxbb-auto_notify', TRUE))
-	update_user_meta(wp_get_current_user()->ID, 'fluxbb-auto_notify', NULL);
-if (get_user_meta(wp_get_current_user()->ID, 'fluxbb-show_smilies', TRUE))
-	update_user_meta(wp_get_current_user()->ID, 'fluxbb-show_smilies', NULL);
-if (get_user_meta(wp_get_current_user()->ID, 'fluxbb-show_img', TRUE))
-	update_user_meta(wp_get_current_user()->ID, 'fluxbb-show_img', NULL);
-if (get_user_meta(wp_get_current_user()->ID, 'fluxbb-show_img_sig', TRUE))
-	update_user_meta(wp_get_current_user()->ID, 'fluxbb-show_img_sig', NULL);
-if (get_user_meta(wp_get_current_user()->ID, 'fluxbb-show_avatars', TRUE))
-	update_user_meta(wp_get_current_user()->ID, 'fluxbb-show_avatars', NULL);
-if (get_user_meta(wp_get_current_user()->ID, 'fluxbb-show_sig', TRUE))
-	update_user_meta(wp_get_current_user()->ID, 'fluxbb-show_sig', NULL);
-if (get_user_meta(wp_get_current_user()->ID, 'distropress-timezone', TRUE))
-	update_user_meta(wp_get_current_user()->ID, 'distropress-timezone', NULL);
-if (get_user_meta(wp_get_current_user()->ID, 'distropress-dst', TRUE))
-	update_user_meta(wp_get_current_user()->ID, 'distropress-dst', NULL);
-if (get_user_meta(wp_get_current_user()->ID, 'distropress-time_format', TRUE))
-	update_user_meta(wp_get_current_user()->ID, 'distropress-time_format', NULL);
-if (get_user_meta(wp_get_current_user()->ID, 'distropress-date_format', TRUE))
-	update_user_meta(wp_get_current_user()->ID, 'distropress-date_format', NULL);
-if (get_user_meta(wp_get_current_user()->ID, 'fluxbb-last_search', TRUE))
-	update_user_meta(wp_get_current_user()->ID, 'fluxbb-last_search', NULL);
-if (get_user_meta(wp_get_current_user()->ID, 'fluxbb-last_email_sent', TRUE))
-	update_user_meta(wp_get_current_user()->ID, 'fluxbb-last_email_sent', NULL);
-if (get_user_meta(wp_get_current_user()->ID, 'fluxbb-last_report_sent', TRUE))
-	update_user_meta(wp_get_current_user()->ID, 'fluxbb-last_report_sent', NULL);
-if (get_user_meta(wp_get_current_user()->ID, 'fluxbb-admin_note', TRUE))
-	update_user_meta(wp_get_current_user()->ID, 'fluxbb-admin_note', NULL);
-if (get_user_meta(wp_get_current_user()->ID, 'fluxbb-activate_string', TRUE))
-	update_user_meta(wp_get_current_user()->ID, 'fluxbb-activate_string', NULL);
-if (get_user_meta(wp_get_current_user()->ID, 'fluxbb-activate_key', TRUE))
-	update_user_meta(wp_get_current_user()->ID, 'fluxbb-activate_key', NULL);
+if (count(get_user_meta($current_user, 'distropress-title')) == 0)
+	update_user_meta($current_user, 'distropress-title', NULL);
+if (count(get_user_meta($current_user, 'jabber')) == 0)
+	update_user_meta($current_user, 'jabber', NULL);
+if (count(get_user_meta($current_user, 'distropress-icq')) == 0)
+	update_user_meta($current_user, 'distropress-icq', NULL);
+if (count(get_user_meta($current_user, 'distropress-msn')) == 0)
+	update_user_meta($current_user, 'distropress-msn', NULL);
+if (count(get_user_meta($current_user, 'aim')) == 0)
+	update_user_meta($current_user, 'aim', NULL);
+if (count(get_user_meta($current_user, 'yim')) == 0)
+	update_user_meta($current_user, 'yim', NULL);
+if (count(get_user_meta($current_user, 'distropress-location')) == 0)
+	update_user_meta($current_user, 'distropress-location', NULL);
+if (count(get_user_meta($current_user, 'fluxbb-signature')) == 0)
+	update_user_meta($current_user, 'fluxbb-signature', NULL);
+if (count(get_user_meta($current_user, 'fluxbb-disp_topics')) == 0)
+	update_user_meta($current_user, 'fluxbb-disp_topics', NULL);
+if (count(get_user_meta($current_user, 'fluxbb-disp_posts')) == 0)
+	update_user_meta($current_user, 'fluxbb-disp_posts', NULL);
+if (count(get_user_meta($current_user, 'fluxbb-email_setting')) == 0)
+	update_user_meta($current_user, 'fluxbb-email_setting', NULL);
+if (count(get_user_meta($current_user, 'fluxbb-notify_with_post')) == 0)
+	update_user_meta($current_user, 'fluxbb-notify_with_post', NULL);
+if (count(get_user_meta($current_user, 'fluxbb-auto_notify')) == 0)
+	update_user_meta($current_user, 'fluxbb-auto_notify', NULL);
+if (count(get_user_meta($current_user, 'fluxbb-show_smilies')) == 0)
+	update_user_meta($current_user, 'fluxbb-show_smilies', NULL);
+if (count(get_user_meta($current_user, 'fluxbb-show_img')) == 0)
+	update_user_meta($current_user, 'fluxbb-show_img', NULL);
+if (count(get_user_meta($current_user, 'fluxbb-show_img_sig')) == 0)
+	update_user_meta($current_user, 'fluxbb-show_img_sig', NULL);
+if (count(get_user_meta($current_user, 'fluxbb-show_avatars')) == 0)
+	update_user_meta($current_user, 'fluxbb-show_avatars', NULL);
+if (count(get_user_meta($current_user, 'fluxbb-show_sig')) == 0)
+	update_user_meta($current_user, 'fluxbb-show_sig', NULL);
+if (count(get_user_meta($current_user, 'distropress-timezone')) == 0)
+	update_user_meta($current_user, 'distropress-timezone', NULL);
+if (count(get_user_meta($current_user, 'distropress-dst')) == 0)
+	update_user_meta($current_user, 'distropress-dst', NULL);
+if (count(get_user_meta($current_user, 'distropress-time_format')) == 0)
+	update_user_meta($current_user, 'distropress-time_format', NULL);
+if (count(get_user_meta($current_user, 'distropress-date_format')) == 0)
+	update_user_meta($current_user, 'distropress-date_format', NULL);
+if (count(get_user_meta($current_user, 'fluxbb-last_search')) == 0)
+	update_user_meta($current_user, 'fluxbb-last_search', NULL);
+if (count(get_user_meta($current_user, 'fluxbb-last_email_sent')) == 0)
+	update_user_meta($current_user, 'fluxbb-last_email_sent', NULL);
+if (count(get_user_meta($current_user, 'fluxbb-last_report_sent')) == 0)
+	update_user_meta($current_user, 'fluxbb-last_report_sent', NULL);
+if (count(get_user_meta($current_user, 'fluxbb-admin_note')) == 0)
+	update_user_meta($current_user, 'fluxbb-admin_note', NULL);
+if (count(get_user_meta($current_user, 'fluxbb-activate_string')) == 0)
+	update_user_meta($current_user, 'fluxbb-activate_string', NULL);
+if (count(get_user_meta($current_user, 'fluxbb-activate_key')) == 0)
+	update_user_meta($current_user, 'fluxbb-activate_key', NULL);
 
 echo '<p><a href="' . home_url() . '/forums/' . '">Go to FluxBB</a></p>';
