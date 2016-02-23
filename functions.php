@@ -14,7 +14,6 @@ function distropress_main_menu() {
 	echo '	<li><a href="' . home_url() . '/">Home</a></li>' . "\n";
 	echo '	<li><a href="' . home_url() . '/forums/">Forums</a></li>' . "\n";
 	if ( ! is_user_logged_in() ) {
-		echo '	<li><a href="' . home_url() . '/wp-login.php?action=register">Register</a></li>' . "\n";
 		echo '	<li><a href="' . home_url() . '/wp-login.php">Log in</a></li>' . "\n";
 	}
 	echo '</ul>' . "\n";
