@@ -107,4 +107,4 @@ find = 'UPDATE '.$db->prefix.'users SET last_visit='.$pun_user['logged'].' WHERE
 replace = 'UPDATE '.$GLOBALS['table_prefix'].'usermeta SET meta_value='.$pun_user['logged'].' WHERE meta_key=\'fluxbb-last_visit\' AND user_id='.($pun_user['id']-1)
 
 find = 'UPDATE '.$db->prefix.'users SET last_visit='.$cur_user['logged'].' WHERE id='.$cur_user['user_id']
-replace = 'UPDATE '.$GLOBALS['table_prefix'].'usermeta SET meta_value='.$cur_user['logged'].' WHERE meta_key=\'fluxbb-last_visit\' AND user_id='.$cur_user['user_id']-1
+replace = 'UPDATE '.$GLOBALS['table_prefix'].'usermeta SET meta_value='.$cur_user['logged'].' WHERE meta_key=\'fluxbb-last_visit\' AND user_id='.($cur_user['user_id']-1)
